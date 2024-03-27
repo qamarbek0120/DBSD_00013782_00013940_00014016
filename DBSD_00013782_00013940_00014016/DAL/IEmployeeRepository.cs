@@ -5,7 +5,7 @@ namespace DBSD_00013782_00013940_00014016.DAL
     public interface IEmployeeRepository
     {
         IList<Employee> GetAll();
-        int Insert(Employee emp);
+        void Insert(Employee emp);
 
         Employee GetById(int id);
         void Update(Employee emp);

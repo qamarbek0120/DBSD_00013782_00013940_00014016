@@ -12,7 +12,7 @@ namespace DBSD_00013782_00013940_00014016.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(
         {
             var list = _employeeRepository.GetAll();
             return View(list);
