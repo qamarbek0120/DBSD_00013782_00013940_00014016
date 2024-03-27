@@ -1,8 +1,8 @@
 ﻿using DBSD_00013782_00013940_00014016.DAL.Models;
-using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Data.Common;
 
 namespace DBSD_00013782_00013940_00014016.DAL
 {
@@ -81,10 +81,44 @@ namespace DBSD_00013782_00013940_00014016.DAL
             throw new NotImplementedException();
         }
 
-        public int Insert(Employee emp)
+        public void Insert(Employee emp)
         {
-            throw new NotImplementedException();
+            using (var conn = new SqlConnection(_connStr))
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                INSERT INTO [dbo].[Employee] (
+                    [FirstName],
+                    [LastName],
+                    [BirthDate],
+                    [PhoneNumber],
+                    [Position],
+                    [Email]
+                ) VALUES (
+                    @FirstName,
+                    @LastName,
+                    @BirthDate,
+                    @PhoneNumber,
+                    @Position,
+                    @Email
+                );";
+
+                    // Parameters
+                    cmd.Parameters.AddWithValue("@FirstName", emp.FirstName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LastName", emp.LastName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BirthDate", emp.BirthDate ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", emp.PhoneNumber ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Position", emp.Position ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", emp.Email ?? (object)DBNull.Value);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
+
+
 
         public void Update(Employee emp)
         {
