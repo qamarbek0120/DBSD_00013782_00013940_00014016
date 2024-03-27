@@ -1,7 +1,10 @@
+using DBSD_00013782_00013940_00014016.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IEmployeeRepository>(x => new EmployeeRepository(builder.Configuration.GetConnectionString("SoyRestaurant")));
 
 var app = builder.Build();
 
